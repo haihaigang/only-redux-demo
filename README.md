@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Redux Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Redux 是一个状态管理容器
 
-## Available Scripts
+## 动机
 
-In the project directory, you can run:
+因状态多、变更复杂，为了能清晰知道状态什么时候变化、为什么变化、怎么变化而设计
 
-### `npm start`
+## 三大原则
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 单一数据源
+- 数据源是只读
+- 纯函数更新
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 数据流
 
-### `npm test`
+单向数据流，包含4个部分， store、view(UI)、action、reducer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+初始化阶段
 
-### `npm run build`
+`store -> getState -> view -> subscribe`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+更新阶段
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`view -> click event -> action -> dispatch -> reducer -> store -> subscribe -> view`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 核心概念
 
-### `npm run eject`
+Actions Reducers Store
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Actions 是一个普通的对象，包含一个 type 字段，可以认为它是一个事件用来描述有什么事发生了。
+Reducers 是一个函数，接受当前的 state 和 action，并决定如何更新，然后返回一个新的 state。
+Store 是一个普通对象，包含应用的全局的状态。
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+类比动机
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Actions 是为什么变化
+- Store(dispatch) 是什么时候变化
+- Reducers 是怎么变化
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## reducers 的三条规则
 
-## Learn More
+`默认一定要返回已经存在的 state`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 返回新的状态，只应该用已有的 state 和 action 计算出一个新的 state
+- 不可变更改，更改 state 只能是不可变更新，不能直接改变 state 的引用
+- 无副作用，更改中不应该包含异步逻辑等引起副作用的
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## actions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- action 是一个普通的对象，约定要包含 type 字段
+- action 中其他的附加的数据约定放到 payload 字段下
+- 每个 action 描述一个状态的变化，像 数据加载成功、数据加载失败、获取数据 可以分为三个
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## store
 
-### Making a Progressive Web App
+- 全局只有一个 store 对象
+- createStore 方法创建
+- applyMiddleware 可以扩展中间件
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+const store = createStore(rootReducer, applyMiddleware(m1, m2, m3,...))
 
-### Advanced Configuration
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### store 对象的方法
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- getState 获取状态
+- subscribe 订阅状态的变化
+- dispatch 触发一个状态的变化
