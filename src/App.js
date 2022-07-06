@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <h2>redux</h2>
       <Demo />
-      <h2>redux</h2>
+      <h2>redux0</h2>
       <Demo0 />
       <h2>toolkit</h2>
       <Demo2/>
