@@ -5,8 +5,8 @@ import { useCallback } from 'react';
 import Todo from './Todo'
 import useTodos from './hooks/useTodos';
 import useCount from './hooks/useCount';
-
 import addTodo from './services/add_todo';
+import DemoBlock from "../DemoBlock"
 
 function App() {
   // 可以把下面用法放到一个自定义 hook 中
@@ -45,22 +45,20 @@ function App() {
   console.log('render')
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={countUp}>count++</button>
-        <button onClick={add}>add {count}</button>
-        <section>
-          {
-            todos.map((todo) => {
-              return(
-                <Todo key={todo.id} todo={todo} remove={remove} />
-                // <div key={todo.id}>{todo.id} {todo.name} <a href="#" onClick={remove} data-id={todo.id}>remove</a></div>
-                )
-              })
-            }
-        </section>
-      </header>
-    </div>
+    <DemoBlock>
+      <button onClick={countUp}>count++</button>
+      <button onClick={add}>add {count}</button>
+      <section>
+        {
+          todos.map((todo) => {
+            return(
+              <Todo key={todo.id} todo={todo} remove={remove} />
+              // <div key={todo.id}>{todo.id} {todo.name} <a href="#" onClick={remove} data-id={todo.id}>remove</a></div>
+              )
+            })
+          }
+      </section>
+    </DemoBlock>
   );
 }
 
